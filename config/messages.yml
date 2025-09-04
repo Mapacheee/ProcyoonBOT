@@ -1,14 +1,10 @@
-# Configuración de mensajes para ProcyoonBOT
-# Todos los mensajes del bot se centralizan aquí
 
-# Mensajes generales del bot
 general:
   bot_ready: "🦝 ProcyoonBOT está listo y funcionando!"
   error_occurred: "❌ Ha ocurrido un error inesperado."
   no_permission: "❌ No tienes permisos para ejecutar este comando."
   command_not_found: "❌ Comando no encontrado."
 
-# Sistema de tickets
 tickets:
   create:
     title: "🎫 Crear Ticket"
@@ -18,7 +14,7 @@ tickets:
     success_description: "Tu ticket ha sido creado exitosamente. Un miembro del staff te atenderá pronto."
     channel_name: "ticket-{username}"
     welcome_message: |
-      🎫 **Bienvenido a tu ticket de soporte**
+      🎫 **Te damos la bienvenida a tu ticket de soporte**
       
       Hola {user}, gracias por crear un ticket. Un miembro del staff te atenderá lo antes posible.
       
@@ -36,7 +32,6 @@ tickets:
     not_ticket_channel: "❌ Este comando solo puede usarse en canales de tickets."
     close_failed: "❌ No se pudo cerrar el ticket."
 
-# Sistema de sugerencias
 suggestions:
   create:
     title: "💡 Nueva Sugerencia"
@@ -55,7 +50,6 @@ suggestions:
     rejected: "❌ Rechazada"
     pending: "⏳ Pendiente"
 
-# Sistema de mensajes personalizados
 messages:
   send:
     modal_title: "📝 Enviar Mensaje"
@@ -65,7 +59,6 @@ messages:
     success: "✅ Mensaje enviado exitosamente."
     error: "❌ No se pudo enviar el mensaje."
 
-# Mensajes de error comunes
 errors:
   missing_permissions: "❌ No tienes los permisos necesarios para ejecutar esta acción."
   user_not_found: "❌ Usuario no encontrado."
@@ -74,12 +67,10 @@ errors:
   database_error: "❌ Error de base de datos. Intenta de nuevo más tarde."
   rate_limited: "❌ Estás siendo limitado. Espera un momento antes de intentar de nuevo."
 
-# Mensajes de confirmación
 confirmations:
   action_completed: "✅ Acción completada exitosamente."
   action_cancelled: "❌ Acción cancelada."
   
-# Embeds de ayuda
 help:
   main_title: "🦝 ProcyoonBOT - Comandos"
   main_description: "Lista de comandos disponibles"

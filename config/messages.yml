@@ -1,5 +1,12 @@
-
 general:
+  bot_ready: "🦝 ProcyoonBOT está listo y funcionando!"
+  error_occurred: "❌ Ha ocurrido un error inesperado."
+  no_permission: "❌ No tienes permisos para ejecutar este comando."
+  command_not_found: "❌ Comando no encontrado."
+
+welcome:
+  message: "🎉 ¡Te damos la bienvenida {user} a Procyoon Network!"
+  channel_not_configured: "❌ El canal de bienvenida no está configurado."ral:
   bot_ready: "ProcyoonBOT está listo y funcionando!"
   error_occurred: "❌ Ha ocurrido un error inesperado."
   no_permission: "❌ No tienes permisos para ejecutar este comando."

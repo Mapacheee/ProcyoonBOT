@@ -47,21 +47,51 @@ tickets:
 
 suggestions:
   create:
-    title: "💡 Nueva Sugerencia"
-    description: "Envía tu sugerencia usando el comando `/sugerir`"
+    modal_title: "💡 Crear Sugerencia"
+    input_label: "Tu Sugerencia"
+    input_placeholder: "Describe tu sugerencia de manera clara y detallada..."
     success_title: "✅ Sugerencia Enviada"
-    success_description: "Tu sugerencia ha sido enviada y será revisada por el staff."
+    success_description: "Tu sugerencia ha sido enviada al canal de sugerencias y estará disponible para votación."
     
   embed:
     title: "💡 Sugerencia de {user}"
-    footer: "ID de Sugerencia: {id}"
+    description: "{suggestion}"
+    footer: "ID: {id} • Reacciona para votar"
     vote_up: "👍"
     vote_down: "👎"
+    author_text: "Nueva Sugerencia"
+    
+  moderation:
+    approve_modal_title: "✅ Aprobar Sugerencia"
+    reject_modal_title: "❌ Rechazar Sugerencia"
+    reason_input_label: "Motivo de la decisión"
+    reason_input_placeholder: "Explica el motivo de la aprobación/rechazo..."
+    approve_success: "✅ Sugerencia aprobada exitosamente."
+    reject_success: "❌ Sugerencia rechazada exitosamente."
+    
+  results:
+    approved_title: "✅ Sugerencia Aprobada"
+    rejected_title: "❌ Sugerencia Rechazada"
+    original_suggestion: "**Sugerencia Original:**\n{suggestion}"
+    author_field: "Autor"
+    decision_by_field: "Decisión por"
+    reason_field: "Motivo"
+    votes_field: "Votos Finales"
+    approved_color: "57F287"  # Verde Discord
+    rejected_color: "ED4245"  # Rojo Discord
     
   status:
-    accepted: "✅ Aceptada"
-    rejected: "❌ Rechazada"
     pending: "⏳ Pendiente"
+    approved: "✅ Aprobada"
+    rejected: "❌ Rechazada"
+    
+  errors:
+    not_found: "❌ No se encontró una sugerencia con ese ID."
+    no_permissions: "❌ No tienes permisos para moderar sugerencias."
+    invalid_id: "❌ ID de sugerencia inválido."
+    channel_not_configured: "❌ Los canales de sugerencias no están configurados."
+    already_processed: "❌ Esta sugerencia ya ha sido procesada."
+    processing_error: "❌ Error al procesar la sugerencia."
 
 messages:
   send:

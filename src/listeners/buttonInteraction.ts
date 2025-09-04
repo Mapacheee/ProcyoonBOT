@@ -11,6 +11,7 @@ import {
     type TextChannel
 } from 'discord.js';
 import { TicketService } from '../services/TicketService';
+import { SuggestionService } from '../services/SuggestionService';
 
 @ApplyOptions<ListenerOptions>({
     event: Events.InteractionCreate
@@ -21,6 +22,11 @@ export class ButtonInteractionListener extends Listener<typeof Events.Interactio
 
         const messageService = this.container.client.messageService;
         const ticketService = TicketService.getInstance();
+        const suggestionService = SuggestionService.getInstance();
+        if (interaction.customId.startsWith('vote_up_') || interaction.customId.startsWith('vote_down_')) {
+            await this.handleSuggestionVote(interaction, suggestionService);
+            return;
+        }
 
         switch (interaction.customId) {
             case 'create_ticket':
@@ -177,5 +183,55 @@ export class ButtonInteractionListener extends Listener<typeof Events.Interactio
             embeds: [],
             components: []
         });
+    }
+
+    private async handleSuggestionVote(interaction: ButtonInteraction, suggestionService: SuggestionService) {
+        try {
+            if (!interaction.guild) {
+                await interaction.reply({
+                    content: '❌ Los votos solo pueden realizarse en servidores.',
+                    ephemeral: true
+                });
+                return;
+            }
+
+            const [action, direction, suggestionId] = interaction.customId.split('_');
+            const voteType = direction as 'up' | 'down';
+
+            if (!suggestionService.hasSuggestion(suggestionId)) {
+                await interaction.reply({
+                    content: '❌ Esta sugerencia ya no está disponible para votar.',
+                    ephemeral: true
+                });
+                return;
+            }
+
+            const success = await suggestionService.handleVote(
+                suggestionId, 
+                interaction.user.id, 
+                voteType, 
+                interaction.guild
+            );
+
+            if (success) {
+                const emoji = voteType === 'up' ? '👍' : '👎';
+                await interaction.reply({
+                    content: `${emoji} Tu voto ha sido registrado exitosamente.`,
+                    ephemeral: true
+                });
+            } else {
+                await interaction.reply({
+                    content: '❌ No se pudo registrar tu voto. Intenta de nuevo.',
+                    ephemeral: true
+                });
+            }
+
+        } catch (error) {
+            this.container.logger.error('Error handling suggestion vote:', error);
+            await interaction.reply({
+                content: '❌ Error al procesar tu voto. Intenta de nuevo.',
+                ephemeral: true
+            });
+        }
     }
 }

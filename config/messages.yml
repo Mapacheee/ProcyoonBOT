@@ -1,17 +1,22 @@
 
 general:
-  bot_ready: "🦝 ProcyoonBOT está listo y funcionando!"
+  bot_ready: "ProcyoonBOT está listo y funcionando!"
   error_occurred: "❌ Ha ocurrido un error inesperado."
   no_permission: "❌ No tienes permisos para ejecutar este comando."
   command_not_found: "❌ Comando no encontrado."
 
 tickets:
+  setup:
+    title: "🎫 Sistema de Tickets"
+    description: "¿Necesitas ayuda o soporte? Crea un ticket usando el botón de abajo.\n\n**¿Cómo funciona?**\n• Haz clic en 'Crear Ticket'\n• Se creará un canal privado para ti\n• Un miembro del staff te atenderá pronto"
+    button_label: "🎫 Crear Ticket"
+    
   create:
     title: "🎫 Crear Ticket"
     description: "Haz clic en el botón de abajo para crear un ticket de soporte."
     button_label: "Crear Ticket"
     success_title: "✅ Ticket Creado"
-    success_description: "Tu ticket ha sido creado exitosamente. Un miembro del staff te atenderá pronto."
+    success_description: "Tu ticket ha sido creado exitosamente en {channel}. Un miembro del staff te atenderá pronto."
     channel_name: "ticket-{username}"
     welcome_message: |
       🎫 **Te damos la bienvenida a tu ticket de soporte**
@@ -19,18 +24,26 @@ tickets:
       Hola {user}, gracias por crear un ticket. Un miembro del staff te atenderá lo antes posible.
       
       Por favor, describe tu problema o consulta de manera detallada para poder ayudarte mejor.
+      
+      **Comandos útiles:**
+      • Para cerrar este ticket, usa el botón de abajo
   
   close:
+    button_label: "🔒 Cerrar Ticket"
     confirm_title: "🔒 Cerrar Ticket"
-    confirm_description: "¿Estás seguro de que quieres cerrar este ticket?"
-    confirm_button: "Cerrar Ticket"
-    cancel_button: "Cancelar"
+    confirm_description: "¿Estás seguro de que quieres cerrar este ticket?\n\n**⚠️ Esta acción no se puede deshacer**"
+    confirm_button: "✅ Sí, cerrar"
+    cancel_button: "❌ Cancelar"
     success: "✅ Ticket cerrado exitosamente."
+    closing_message: "🔒 **Ticket cerrándose...**\n\nEste ticket será eliminado en 5 segundos.\n\n¡Gracias por usar nuestro sistema de soporte!"
     
   errors:
-    already_exists: "❌ Ya tienes un ticket abierto."
+    already_exists: "❌ Ya tienes un ticket abierto. Solo puedes tener un ticket activo a la vez."
     not_ticket_channel: "❌ Este comando solo puede usarse en canales de tickets."
     close_failed: "❌ No se pudo cerrar el ticket."
+    category_not_found: "❌ No se encontró la categoría de tickets. Contacta a un administrador."
+    no_permissions: "❌ No tienes permisos para cerrar este ticket."
+    creation_failed: "❌ No se pudo crear el ticket. Intenta de nuevo más tarde."
 
 suggestions:
   create:

@@ -7,7 +7,7 @@ import { SuggestionService } from '../services/SuggestionService';
 
 @ApplyOptions<Command.Options>({
     description: 'Rechaza una sugerencia con un ID específico',
-    aliases: ['reject']
+    aliases: ['rechazar']
 })
 export class RejectCommand extends Command {
     public override async messageRun(message: Message, args: Args) {

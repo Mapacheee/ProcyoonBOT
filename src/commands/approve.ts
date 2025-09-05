@@ -8,7 +8,7 @@ import { SuggestionService } from '../services/SuggestionService';
 
 @ApplyOptions<Command.Options>({
     description: 'Aprueba una sugerencia con un ID específico',
-    aliases: ['approve']
+    aliases: ['aprobar']
 })
 export class ApproveCommand extends Command {
     public override async messageRun(message: Message, args: Args) {

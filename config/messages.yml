@@ -8,6 +8,28 @@ welcome:
   message: "🎉 ¡Te damos la bienvenida {user} a Procyoon Network!"
   channel_not_configured: "❌ El canal de bienvenida no está configurado."
 
+voice_channels:
+  setup:
+    title: "🎤 Canales de Voz Temporales"
+    description: "¿Quieres crear tu propio canal de voz temporal?\n\n**¿Cómo funciona?**\n• Haz clic en 'Crear Canal de Voz'\n• Especifica cuántas personas pueden entrar\n• El canal se eliminará automáticamente cuando esté vacío por 1 minuto"
+    button_label: "🎤 Crear Canal de Voz"
+    
+  create:
+    modal_title: "🎤 Crear Canal de Voz"
+    limit_input_label: "Límite de Usuarios"
+    limit_input_placeholder: "Número máximo de usuarios (1-99)"
+    success: "✅ Canal de voz creado: {channel}"
+    channel_name: "{username} Voice"
+    
+  errors:
+    category_not_found: "❌ La categoría de canales de voz no está configurada."
+    invalid_limit: "❌ El límite debe ser un número entre 1 y 99."
+    creation_failed: "❌ No se pudo crear el canal de voz."
+    not_in_voice: "❌ Debes estar en un canal de voz para usar este comando."
+    
+  cleanup:
+    deleted: "🗑️ Canal de voz eliminado por inactividad: {channel}"
+
 tickets:
   setup:
     title: "🎫 Sistema de Tickets"

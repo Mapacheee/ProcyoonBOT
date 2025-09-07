@@ -3,6 +3,7 @@ import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
 import type { Client } from 'discord.js';
 import { TicketService } from '../services/TicketService';
 import { SuggestionService } from '../services/SuggestionService';
+import { VoiceChannelService } from '../services/VoiceChannelService';
 
 @ApplyOptions<ListenerOptions>({
     event: Events.ClientReady,
@@ -15,6 +16,7 @@ export class ReadyListener extends Listener<typeof Events.ClientReady> {
         
         TicketService.getInstance();
         SuggestionService.getInstance();
+        VoiceChannelService.getInstance();
         
         this.container.logger.info(messageService.getMessage('general.bot_ready'));
         this.container.logger.info(`Logged in as ${username} (${id})`);

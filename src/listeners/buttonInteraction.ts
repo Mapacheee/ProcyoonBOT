@@ -12,6 +12,7 @@ import {
 } from 'discord.js';
 import { TicketService } from '../services/TicketService';
 import { SuggestionService } from '../services/SuggestionService';
+import { VoiceChannelService } from '../services/VoiceChannelService';
 
 @ApplyOptions<ListenerOptions>({
     event: Events.InteractionCreate
@@ -23,6 +24,7 @@ export class ButtonInteractionListener extends Listener<typeof Events.Interactio
         const messageService = this.container.client.messageService;
         const ticketService = TicketService.getInstance();
         const suggestionService = SuggestionService.getInstance();
+        
         if (interaction.customId.startsWith('vote_up_') || interaction.customId.startsWith('vote_down_')) {
             await this.handleSuggestionVote(interaction, suggestionService);
             return;
@@ -37,6 +39,12 @@ export class ButtonInteractionListener extends Listener<typeof Events.Interactio
                 break;
             case 'confirm_close_ticket':
                 await this.handleConfirmCloseTicket(interaction, ticketService);
+                break;
+            case 'cancel_close_ticket':
+                await this.handleCancelCloseTicket(interaction);
+                break;
+            case 'create_voice_channel':
+                await this.handleCreateVoiceChannel(interaction);
                 break;
             case 'cancel_close_ticket':
                 await this.handleCancelCloseTicket(interaction);
@@ -230,6 +238,58 @@ export class ButtonInteractionListener extends Listener<typeof Events.Interactio
             this.container.logger.error('Error handling suggestion vote:', error);
             await interaction.reply({
                 content: '❌ Error al procesar tu voto. Intenta de nuevo.',
+                ephemeral: true
+            });
+        }
+    }
+
+    private async handleCreateVoiceChannel(interaction: ButtonInteraction) {
+        const messageService = this.container.client.messageService;
+
+        try {
+            // Verificar que estamos en un servidor
+            if (!interaction.guild) {
+                await interaction.reply({
+                    content: '❌ Los canales de voz solo pueden crearse en servidores.',
+                    ephemeral: true
+                });
+                return;
+            }
+
+            // Verificar que la categoría esté configurada
+            if (!process.env.VOICE_CATEGORY_ID) {
+                await interaction.reply({
+                    content: messageService.getMessage('voice_channels.errors.category_not_found'),
+                    ephemeral: true
+                });
+                return;
+            }
+
+            // Crear modal para pedir el límite de usuarios
+            const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = await import('discord.js');
+            
+            const modal = new ModalBuilder()
+                .setCustomId('voice_channel_modal')
+                .setTitle(messageService.getMessage('voice_channels.create.modal_title'));
+
+            const limitInput = new TextInputBuilder()
+                .setCustomId('voice_user_limit')
+                .setLabel(messageService.getMessage('voice_channels.create.limit_input_label'))
+                .setPlaceholder(messageService.getMessage('voice_channels.create.limit_input_placeholder'))
+                .setStyle(TextInputStyle.Short)
+                .setRequired(true)
+                .setMaxLength(2)
+                .setMinLength(1);
+
+            const row = new ActionRowBuilder<any>().addComponents(limitInput);
+            modal.addComponents(row);
+
+            await interaction.showModal(modal);
+
+        } catch (error) {
+            this.container.logger.error('Error showing voice channel modal:', error);
+            await interaction.reply({
+                content: messageService.getMessage('voice_channels.errors.creation_failed'),
                 ephemeral: true
             });
         }

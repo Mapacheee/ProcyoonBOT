@@ -10,16 +10,22 @@ import { VoiceChannelService } from '../services/VoiceChannelService';
     once: true
 })
 export class ReadyListener extends Listener<typeof Events.ClientReady> {
-    public override run(client: Client<true>) {
+    public override async run(client: Client<true>) {
         const { username, id } = client.user;
         const messageService = this.container.client.messageService;
         
         TicketService.getInstance();
-        SuggestionService.getInstance();
+        const suggestionService = SuggestionService.getInstance();
         VoiceChannelService.getInstance();
         
         this.container.logger.info(messageService.getMessage('general.bot_ready'));
         this.container.logger.info(`Logged in as ${username} (${id})`);
         this.container.logger.info(`Ready to serve ${client.guilds.cache.size} guild(s)`);
+        
+        for (const guild of client.guilds.cache.values()) {
+            await suggestionService.restoreActiveSuggestions(guild);
+        }
+        
+        this.container.logger.info('Active suggestions restored');
     }
 }

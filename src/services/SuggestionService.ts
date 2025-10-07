@@ -10,6 +10,8 @@ import {
     Colors
 } from 'discord.js';
 import { MessageService } from './MessageService';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { join } from 'path';
 
 export interface Suggestion {
     id: string;
@@ -33,9 +35,12 @@ export class SuggestionService {
     private messageService: MessageService;
     private suggestions: Map<string, Suggestion> = new Map();
     private suggestionCounter: number = 1;
+    private readonly dataFilePath: string;
 
     private constructor() {
         this.messageService = MessageService.getInstance();
+        this.dataFilePath = join(process.cwd(), 'data', 'suggestions.json');
+        this.loadSuggestions();
     }
 
     public static getInstance(): SuggestionService {
@@ -114,6 +119,7 @@ export class SuggestionService {
             };
 
             this.suggestions.set(suggestionId, suggestion);
+            this.saveSuggestions(); // Guardar después de crear
             return suggestionId;
 
         } catch (error) {
@@ -135,6 +141,7 @@ export class SuggestionService {
             suggestion.votes[voteType].push(userId);
 
             await this.updateSuggestionMessage(suggestion, guild);
+            this.saveSuggestions(); // Guardar después de votar
             return true;
 
         } catch (error) {
@@ -173,6 +180,7 @@ export class SuggestionService {
 
             await this.sendSuggestionResult(suggestion, guild);
 
+            this.saveSuggestions(); // Guardar después de moderar
             return true;
 
         } catch (error) {
@@ -316,5 +324,81 @@ export class SuggestionService {
             approved: suggestions.filter(s => s.status === 'approved').length,
             rejected: suggestions.filter(s => s.status === 'rejected').length
         };
+    }
+
+    private loadSuggestions(): void {
+        try {
+            const dataDir = join(process.cwd(), 'data');
+            if (!existsSync(dataDir)) {
+                const { mkdirSync } = require('fs');
+                mkdirSync(dataDir, { recursive: true });
+            }
+
+            if (existsSync(this.dataFilePath)) {
+                const fileContent = readFileSync(this.dataFilePath, 'utf-8');
+                const data = JSON.parse(fileContent);
+                
+                if (data.suggestions) {
+                    for (const [id, suggestion] of Object.entries(data.suggestions)) {
+                        this.suggestions.set(id, suggestion as Suggestion);
+                    }
+                }
+                
+                if (data.counter) {
+                    this.suggestionCounter = data.counter;
+                }
+                
+                console.log(`Loaded ${this.suggestions.size} suggestions from file`);
+            } else {
+                console.log('No suggestions file found, starting fresh');
+            }
+        } catch (error) {
+            console.error('Error loading suggestions:', error);
+            console.log('Starting with empty suggestions');
+        }
+    }
+
+    private saveSuggestions(): void {
+        try {
+            const data = {
+                suggestions: Object.fromEntries(this.suggestions),
+                counter: this.suggestionCounter,
+                lastUpdated: new Date().toISOString()
+            };
+
+            writeFileSync(this.dataFilePath, JSON.stringify(data, null, 2));
+        } catch (error) {
+            console.error('Error saving suggestions:', error);
+        }
+    }
+
+    public async restoreActiveSuggestions(guild: Guild): Promise<void> {
+        try {
+            const pendingSuggestions = Array.from(this.suggestions.values())
+                .filter(s => s.status === 'pending');
+
+            console.log(`Restoring ${pendingSuggestions.length} active suggestions`);
+
+            for (const suggestion of pendingSuggestions) {
+                try {
+                    const channel = guild.channels.cache.get(suggestion.channelId) as TextChannel;
+                    if (!channel) continue;
+
+                    const message = await channel.messages.fetch(suggestion.messageId).catch(() => null);
+                    if (!message) {
+                        this.suggestions.delete(suggestion.id);
+                        continue;
+                    }
+
+                    await this.updateSuggestionMessage(suggestion, guild);
+                } catch (error) {
+                    console.error(`Error restoring suggestion ${suggestion.id}:`, error);
+                }
+            }
+
+            this.saveSuggestions();
+        } catch (error) {
+            console.error('Error restoring active suggestions:', error);
+        }
     }
 }

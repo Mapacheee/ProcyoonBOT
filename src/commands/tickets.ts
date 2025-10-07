@@ -57,7 +57,7 @@ export class TicketsCommand extends Command {
         try {
             if (!process.env.TICKET_CATEGORY_ID) {
                 await interaction.reply({
-                    content: '❌ La categoría de tickets no está configurada. Agrega `TICKET_CATEGORY_ID` a las variables de entorno.',
+                    content: messageService.getMessage('tickets.setup.config_missing'),
                     ephemeral: true
                 });
                 return;
@@ -90,14 +90,14 @@ export class TicketsCommand extends Command {
                 });
             } else {
                 await interaction.reply({
-                    content: '❌ No se puede configurar el sistema de tickets en este tipo de canal.',
+                    content: messageService.getMessage('general.invalid_channel_type'),
                     ephemeral: true
                 });
                 return;
             }
 
             await interaction.reply({
-                content: '✅ Sistema de tickets configurado exitosamente en este canal.',
+                content: messageService.getMessage('general.setup_success'),
                 ephemeral: true
             });
 
@@ -111,16 +111,17 @@ export class TicketsCommand extends Command {
     }
 
     private async handleStats(interaction: ChatInputCommandInteraction) {
+        const messageService = this.container.client.messageService;
         const { TicketService } = await import('../services/TicketService');
         const ticketService = TicketService.getInstance();
         const stats = ticketService.getTicketStats();
 
         const statsEmbed = new EmbedBuilder()
             .setColor(Colors.Blue)
-            .setTitle('📊 Estadísticas de Tickets')
+            .setTitle(messageService.getMessage('tickets.stats.title'))
             .addFields([
                 {
-                    name: '🎫 Tickets Activos',
+                    name: messageService.getMessage('tickets.stats.active_field'),
                     value: stats.activeTickets.toString(),
                     inline: true
                 }

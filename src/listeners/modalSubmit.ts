@@ -69,7 +69,7 @@ export class ModalSubmitListener extends Listener<typeof Events.InteractionCreat
         try {
             if (!interaction.guild) {
                 await interaction.reply({
-                    content: '❌ Las sugerencias solo pueden enviarse desde servidores.',
+                    content: messageService.getMessage('suggestions.errors.guild_only'),
                     ephemeral: true
                 });
                 return;
@@ -114,7 +114,7 @@ export class ModalSubmitListener extends Listener<typeof Events.InteractionCreat
             // Verificar que estamos en un servidor
             if (!interaction.guild) {
                 await interaction.reply({
-                    content: '❌ Los canales de voz solo pueden crearse en servidores.',
+                    content: messageService.getMessage('voice_channels.errors.guild_only'),
                     ephemeral: true
                 });
                 return;

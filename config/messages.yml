@@ -3,6 +3,10 @@ general:
   error_occurred: "❌ Ha ocurrido un error inesperado."
   no_permission: "❌ No tienes permisos para ejecutar este comando."
   command_not_found: "❌ Comando no encontrado."
+  guild_only: "❌ Este comando solo puede usarse en servidores."
+  setup_success: "✅ Sistema configurado exitosamente en este canal."
+  invalid_channel_type: "❌ No se puede configurar el sistema en este tipo de canal."
+  config_not_found: "❌ Configuración no encontrada. Contacta a un administrador."
 
 welcome:
   message: "🎉 ¡Te damos la bienvenida {user} a Procyoon Network!"
@@ -13,19 +17,29 @@ voice_channels:
     title: "🎤 Canales de Voz Temporales"
     description: "¿Quieres crear tu propio canal de voz temporal?\n\n**¿Cómo funciona?**\n• Haz clic en 'Crear Canal de Voz'\n• Especifica cuántas personas pueden entrar\n• El canal se eliminará automáticamente cuando esté vacío por 1 minuto"
     button_label: "🎤 Crear Canal de Voz"
+    config_missing: "❌ La categoría de canales de voz no está configurada. Agrega `VOICE_CATEGORY_ID` a las variables de entorno."
+    footer_text: "Sistema de Canales de Voz - Revenge Network"
+    channel_error: "❌ No se puede configurar el sistema de canales de voz en este tipo de canal."
+    success_setup: "✅ Sistema de canales de voz configurado exitosamente en este canal."
     
   create:
     modal_title: "🎤 Crear Canal de Voz"
     limit_input_label: "Límite de Usuarios"
     limit_input_placeholder: "Número máximo de usuarios (1-99)"
     success: "✅ Canal de voz creado: {channel}"
-    channel_name: "{username} Voice"
+    channel_name: "Voz de {username}"
+    
+  stats:
+    title: "📊 Estadísticas de Canales de Voz"
+    active_channels: "🎤 Canales Activos"
+    total_created: "📈 Total Creados"
     
   errors:
     category_not_found: "❌ La categoría de canales de voz no está configurada."
     invalid_limit: "❌ El límite debe ser un número entre 1 y 99."
     creation_failed: "❌ No se pudo crear el canal de voz."
     not_in_voice: "❌ Debes estar en un canal de voz para usar este comando."
+    guild_only: "❌ Los canales de voz solo pueden crearse en servidores."
     
   cleanup:
     deleted: "🗑️ Canal de voz eliminado por inactividad: {channel}"
@@ -35,6 +49,7 @@ tickets:
     title: "🎫 Sistema de Tickets"
     description: "¿Necesitas ayuda o soporte? Crea un ticket usando el botón de abajo.\n\n**¿Cómo funciona?**\n• Haz clic en 'Crear Ticket'\n• Se creará un canal privado para ti\n• Un miembro del staff te atenderá pronto"
     button_label: "🎫 Crear Ticket"
+    config_missing: "❌ La categoría de tickets no está configurada. Agrega `TICKET_CATEGORY_ID` a las variables de entorno."
     
   create:
     title: "🎫 Crear Ticket"
@@ -43,6 +58,7 @@ tickets:
     success_title: "✅ Ticket Creado"
     success_description: "Tu ticket ha sido creado exitosamente en {channel}. Un miembro del staff te atenderá pronto."
     channel_name: "ticket-{username}"
+    welcome_title: "🎫 Ticket de Soporte"
     welcome_message: |
       🎫 **Te damos la bienvenida a tu ticket de soporte**
       
@@ -59,8 +75,13 @@ tickets:
     confirm_description: "¿Estás seguro de que quieres cerrar este ticket?\n\n**⚠️ Esta acción no se puede deshacer**"
     confirm_button: "✅ Sí, cerrar"
     cancel_button: "❌ Cancelar"
+    cancelled: "❌ Cierre de ticket cancelado."
     success: "✅ Ticket cerrado exitosamente."
     closing_message: "🔒 **Ticket cerrándose...**\n\nEste ticket será eliminado en 5 segundos.\n\n¡Gracias por usar nuestro sistema de soporte!"
+    
+  stats:
+    title: "📊 Estadísticas de Tickets"
+    active_field: "🎫 Tickets Activos"
     
   errors:
     already_exists: "❌ Ya tienes un ticket abierto. Solo puedes tener un ticket activo a la vez."
@@ -69,6 +90,7 @@ tickets:
     category_not_found: "❌ No se encontró la categoría de tickets. Contacta a un administrador."
     no_permissions: "❌ No tienes permisos para cerrar este ticket."
     creation_failed: "❌ No se pudo crear el ticket. Intenta de nuevo más tarde."
+    guild_only: "❌ Los tickets solo pueden crearse en servidores."
 
 suggestions:
   create:
@@ -86,6 +108,17 @@ suggestions:
     vote_down: "👎"
     author_text: "Nueva Sugerencia"
     
+  vote:
+    success: "{emoji} Tu voto ha sido registrado exitosamente."
+    failed: "❌ No se pudo registrar tu voto. Intenta de nuevo."
+    error: "❌ Error al procesar tu voto. Intenta de nuevo."
+    
+  voting:
+    not_available: "❌ Esta sugerencia ya no está disponible para votar."
+    vote_registered: "Tu voto ha sido registrado exitosamente."
+    vote_failed: "❌ No se pudo registrar tu voto. Intenta de nuevo."
+    vote_error: "❌ Error al procesar tu voto. Intenta de nuevo."
+    
   moderation:
     approve_modal_title: "✅ Aprobar Sugerencia"
     reject_modal_title: "❌ Rechazar Sugerencia"
@@ -93,6 +126,14 @@ suggestions:
     reason_input_placeholder: "Explica el motivo de la aprobación/rechazo..."
     approve_success: "✅ Sugerencia aprobada exitosamente."
     reject_success: "❌ Sugerencia rechazada exitosamente."
+    approve_usage: "❌ Debes especificar el ID de la sugerencia.\n**Uso:** `!aprobar <ID> <motivo>`\n**Ejemplo:** `!aprobar 0001 Esta sugerencia mejorará la experiencia del servidor`"
+    approve_reason: "❌ Debes especificar un motivo de al menos 5 caracteres.\n**Uso:** `!aprobar <ID> <motivo>`\n**Ejemplo:** `!aprobar 0001 Esta sugerencia mejorará la experiencia del servidor`"
+    reject_usage: "❌ Debes especificar el ID de la sugerencia.\n**Uso:** `!rechazar <ID> <motivo>`\n**Ejemplo:** `!rechazar 0001 Esta sugerencia no se alinea con las políticas del servidor`"
+    reject_reason: "❌ Debes especificar un motivo de al menos 5 caracteres.\n**Uso:** `!rechazar <ID> <motivo>`\n**Ejemplo:** `!rechazar 0001 Esta sugerencia no se alinea con las políticas del servidor`"
+    usage_approve: "❌ Debes especificar el ID de la sugerencia.\n**Uso:** `!aprobar <ID> <motivo>`\n**Ejemplo:** `!aprobar 0001 Esta sugerencia mejorará la experiencia del servidor`"
+    usage_reject: "❌ Debes especificar el ID de la sugerencia.\n**Uso:** `!rechazar <ID> <motivo>`\n**Ejemplo:** `!rechazar 0001 Esta sugerencia no se alinea con las políticas del servidor`"
+    reason_too_short_approve: "❌ Debes especificar un motivo de al menos 5 caracteres.\n**Uso:** `!aprobar <ID> <motivo>`\n**Ejemplo:** `!aprobar 0001 Esta sugerencia mejorará la experiencia del servidor`"
+    reason_too_short_reject: "❌ Debes especificar un motivo de al menos 5 caracteres.\n**Uso:** `!rechazar <ID> <motivo>`\n**Ejemplo:** `!rechazar 0001 Esta sugerencia no se alinea con las políticas del servidor`"
     
   results:
     approved_title: "✅ Sugerencia Aprobada"
@@ -117,6 +158,7 @@ suggestions:
     channel_not_configured: "❌ Los canales de sugerencias no están configurados."
     already_processed: "❌ Esta sugerencia ya ha sido procesada."
     processing_error: "❌ Error al procesar la sugerencia."
+    guild_only: "❌ Este comando solo puede usarse en servidores."
 
 messages:
   send:

@@ -15,7 +15,7 @@ export class RejectCommand extends Command {
         const suggestionService = SuggestionService.getInstance();
 
         if (!message.guild) {
-            await message.reply('❌ Este comando solo puede usarse en servidores.');
+            await message.reply(messageService.getMessage('suggestions.errors.guild_only'));
             return;
         }
 
@@ -27,14 +27,14 @@ export class RejectCommand extends Command {
         const suggestionId = await args.pick('string').catch(() => null);
         
         if (!suggestionId) {
-            await message.reply('❌ Debes especificar el ID de la sugerencia.\n**Uso:** `!rechazar <ID> <motivo>`\n**Ejemplo:** `!rechazar 0001 Esta sugerencia no se alinea con las políticas del servidor`');
+            await message.reply(messageService.getMessage('suggestions.moderation.reject_usage'));
             return;
         }
 
         const reason = await args.rest('string').catch(() => null);
         
         if (!reason || reason.length < 5) {
-            await message.reply('❌ Debes especificar un motivo de al menos 5 caracteres.\n**Uso:** `!rechazar <ID> <motivo>`\n**Ejemplo:** `!rechazar 0001 Esta sugerencia no se alinea con las políticas del servidor`');
+            await message.reply(messageService.getMessage('suggestions.moderation.reject_reason'));
             return;
         }
 

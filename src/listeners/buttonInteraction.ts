@@ -58,7 +58,7 @@ export class ButtonInteractionListener extends Listener<typeof Events.Interactio
         try {
             if (!interaction.guild) {
                 await interaction.reply({
-                    content: '❌ Los tickets solo pueden crearse en servidores.',
+                    content: messageService.getMessage('tickets.errors.guild_only'),
                     ephemeral: true
                 });
                 return;
@@ -186,18 +186,22 @@ export class ButtonInteractionListener extends Listener<typeof Events.Interactio
     }
 
     private async handleCancelCloseTicket(interaction: ButtonInteraction) {
+        const messageService = this.container.client.messageService;
+        
         await interaction.update({
-            content: '❌ Cierre de ticket cancelado.',
+            content: messageService.getMessage('tickets.close.cancelled'),
             embeds: [],
             components: []
         });
     }
 
     private async handleSuggestionVote(interaction: ButtonInteraction, suggestionService: SuggestionService) {
+        const messageService = this.container.client.messageService;
+        
         try {
             if (!interaction.guild) {
                 await interaction.reply({
-                    content: '❌ Los votos solo pueden realizarse en servidores.',
+                    content: messageService.getMessage('suggestions.errors.guild_only'),
                     ephemeral: true
                 });
                 return;
@@ -208,7 +212,7 @@ export class ButtonInteractionListener extends Listener<typeof Events.Interactio
 
             if (!suggestionService.hasSuggestion(suggestionId)) {
                 await interaction.reply({
-                    content: '❌ Esta sugerencia ya no está disponible para votar.',
+                    content: messageService.getMessage('suggestions.errors.not_found'),
                     ephemeral: true
                 });
                 return;
@@ -222,14 +226,15 @@ export class ButtonInteractionListener extends Listener<typeof Events.Interactio
             );
 
             if (success) {
-                const emoji = voteType === 'up' ? '👍' : '👎';
                 await interaction.reply({
-                    content: `${emoji} Tu voto ha sido registrado exitosamente.`,
+                    content: messageService.getMessage('suggestions.vote.success', {
+                        emoji: voteType === 'up' ? '👍' : '👎'
+                    }),
                     ephemeral: true
                 });
             } else {
                 await interaction.reply({
-                    content: '❌ No se pudo registrar tu voto. Intenta de nuevo.',
+                    content: messageService.getMessage('suggestions.vote.failed'),
                     ephemeral: true
                 });
             }
@@ -237,7 +242,7 @@ export class ButtonInteractionListener extends Listener<typeof Events.Interactio
         } catch (error) {
             this.container.logger.error('Error handling suggestion vote:', error);
             await interaction.reply({
-                content: '❌ Error al procesar tu voto. Intenta de nuevo.',
+                content: messageService.getMessage('suggestions.vote.error'),
                 ephemeral: true
             });
         }
@@ -247,16 +252,14 @@ export class ButtonInteractionListener extends Listener<typeof Events.Interactio
         const messageService = this.container.client.messageService;
 
         try {
-            // Verificar que estamos en un servidor
             if (!interaction.guild) {
                 await interaction.reply({
-                    content: '❌ Los canales de voz solo pueden crearse en servidores.',
+                    content: messageService.getMessage('voice_channels.errors.guild_only'),
                     ephemeral: true
                 });
                 return;
             }
 
-            // Verificar que la categoría esté configurada
             if (!process.env.VOICE_CATEGORY_ID) {
                 await interaction.reply({
                     content: messageService.getMessage('voice_channels.errors.category_not_found'),
@@ -265,7 +268,6 @@ export class ButtonInteractionListener extends Listener<typeof Events.Interactio
                 return;
             }
 
-            // Crear modal para pedir el límite de usuarios
             const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = await import('discord.js');
             
             const modal = new ModalBuilder()

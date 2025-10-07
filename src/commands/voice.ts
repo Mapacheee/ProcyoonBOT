@@ -56,7 +56,7 @@ export class VoiceCommand extends Command {
         try {
             if (!process.env.VOICE_CATEGORY_ID) {
                 await interaction.reply({
-                    content: '❌ La categoría de canales de voz no está configurada. Agrega `VOICE_CATEGORY_ID` a las variables de entorno.',
+                    content: messageService.getMessage('voice_channels.setup.config_missing'),
                     ephemeral: true
                 });
                 return;
@@ -68,7 +68,7 @@ export class VoiceCommand extends Command {
                 .setDescription(messageService.getMessage('voice_channels.setup.description'))
                 .setThumbnail(interaction.guild?.iconURL() || null)
                 .setFooter({
-                    text: 'Sistema de Canales de Voz - ProcyoonBOT',
+                    text: messageService.getMessage('voice_channels.setup.footer_text'),
                     iconURL: interaction.client.user.displayAvatarURL()
                 })
                 .setTimestamp();
@@ -89,14 +89,14 @@ export class VoiceCommand extends Command {
                 });
             } else {
                 await interaction.reply({
-                    content: '❌ No se puede configurar el sistema de canales de voz en este tipo de canal.',
+                    content: messageService.getMessage('voice_channels.setup.channel_error'),
                     ephemeral: true
                 });
                 return;
             }
 
             await interaction.reply({
-                content: '✅ Sistema de canales de voz configurado exitosamente en este canal.',
+                content: messageService.getMessage('voice_channels.setup.success_setup'),
                 ephemeral: true
             });
 
@@ -110,21 +110,22 @@ export class VoiceCommand extends Command {
     }
 
     private async handleStats(interaction: ChatInputCommandInteraction) {
+        const messageService = this.container.client.messageService;
         const { VoiceChannelService } = await import('../services/VoiceChannelService');
         const voiceService = VoiceChannelService.getInstance();
         const stats = voiceService.getStats();
 
         const statsEmbed = new EmbedBuilder()
             .setColor(Colors.Purple)
-            .setTitle('📊 Estadísticas de Canales de Voz')
+            .setTitle(messageService.getMessage('voice_channels.stats.title'))
             .addFields([
                 {
-                    name: '🎤 Canales Activos',
+                    name: messageService.getMessage('voice_channels.stats.active_channels'),
                     value: stats.activeChannels.toString(),
                     inline: true
                 },
                 {
-                    name: '📈 Total Creados',
+                    name: messageService.getMessage('voice_channels.stats.total_created'),
                     value: stats.totalCreated.toString(),
                     inline: true
                 }

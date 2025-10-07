@@ -69,7 +69,7 @@ export class TicketsCommand extends Command {
                 .setDescription(messageService.getMessage('tickets.setup.description'))
                 .setThumbnail(interaction.guild?.iconURL() || null)
                 .setFooter({
-                    text: 'Sistema de Tickets - ProcyoonBOT',
+                    text: messageService.getMessage('tickets.setup.footer_text'),
                     iconURL: interaction.client.user.displayAvatarURL()
                 })
                 .setTimestamp();

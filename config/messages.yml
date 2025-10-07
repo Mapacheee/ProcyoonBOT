@@ -9,7 +9,7 @@ general:
   config_not_found: "❌ Configuración no encontrada. Contacta a un administrador."
 
 welcome:
-  message: "🎉 ¡Te damos la bienvenida {user} a Procyoon Network!"
+  message: "🎉 ¡Te damos la bienvenida {user} a nuestro servidor!"
   channel_not_configured: "❌ El canal de bienvenida no está configurado."
 
 voice_channels:
@@ -18,7 +18,7 @@ voice_channels:
     description: "¿Quieres crear tu propio canal de voz temporal?\n\n**¿Cómo funciona?**\n• Haz clic en 'Crear Canal de Voz'\n• Especifica cuántas personas pueden entrar\n• El canal se eliminará automáticamente cuando esté vacío por 1 minuto"
     button_label: "🎤 Crear Canal de Voz"
     config_missing: "❌ La categoría de canales de voz no está configurada. Agrega `VOICE_CATEGORY_ID` a las variables de entorno."
-    footer_text: "Sistema de Canales de Voz - Revenge Network"
+    footer_text: "Sistema de Canales de Voz - Tu Servidor"
     channel_error: "❌ No se puede configurar el sistema de canales de voz en este tipo de canal."
     success_setup: "✅ Sistema de canales de voz configurado exitosamente en este canal."
     
@@ -50,6 +50,7 @@ tickets:
     description: "¿Necesitas ayuda o soporte? Crea un ticket usando el botón de abajo.\n\n**¿Cómo funciona?**\n• Haz clic en 'Crear Ticket'\n• Se creará un canal privado para ti\n• Un miembro del staff te atenderá pronto"
     button_label: "🎫 Crear Ticket"
     config_missing: "❌ La categoría de tickets no está configurada. Agrega `TICKET_CATEGORY_ID` a las variables de entorno."
+    footer_text: "Sistema de Tickets"
     
   create:
     title: "🎫 Crear Ticket"

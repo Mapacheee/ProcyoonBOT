@@ -95,7 +95,7 @@ export class TicketService {
 
     private async sendWelcomeMessage(channel: TextChannel, user: User): Promise<void> {
         const welcomeEmbed = new EmbedBuilder()
-            .setColor(Colors.Blue)
+            .setColor('#FF4F00')
             .setTitle('🎫 Ticket de Soporte')
             .setDescription(this.messageService.getMessage('tickets.create.welcome_message', {
                 user: user.toString()
@@ -140,7 +140,7 @@ export class TicketService {
             }
 
             const closingEmbed = new EmbedBuilder()
-                .setColor(Colors.Red)
+                .setColor('#FF4F00')
                 .setTitle('🔒 Cerrando Ticket')
                 .setDescription(this.messageService.getMessage('tickets.close.closing_message'))
                 .setFooter({

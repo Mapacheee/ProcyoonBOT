@@ -113,7 +113,7 @@ export class ButtonInteractionListener extends Listener<typeof Events.Interactio
             }
 
             const confirmEmbed = new EmbedBuilder()
-                .setColor(Colors.Orange)
+                .setColor('#FF4F00')
                 .setTitle(messageService.getMessage('tickets.close.confirm_title'))
                 .setDescription(messageService.getMessage('tickets.close.confirm_description'));
 

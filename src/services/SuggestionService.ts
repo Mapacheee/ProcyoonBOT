@@ -65,7 +65,7 @@ export class SuggestionService {
             const suggestionId = this.generateSuggestionId();
 
             const suggestionEmbed = new EmbedBuilder()
-                .setColor(Colors.Blue)
+                .setColor('#FF4F00')
                 .setAuthor({
                     name: this.messageService.getMessage('suggestions.embed.author_text'),
                     iconURL: user.displayAvatarURL()

@@ -64,7 +64,7 @@ export class TicketsCommand extends Command {
             }
 
             const ticketEmbed = new EmbedBuilder()
-                .setColor(Colors.Blue)
+                .setColor('#FF4F00')
                 .setTitle(messageService.getMessage('tickets.setup.title'))
                 .setDescription(messageService.getMessage('tickets.setup.description'))
                 .setThumbnail(interaction.guild?.iconURL() || null)
@@ -117,7 +117,7 @@ export class TicketsCommand extends Command {
         const stats = ticketService.getTicketStats();
 
         const statsEmbed = new EmbedBuilder()
-            .setColor(Colors.Blue)
+            .setColor('#FF4F00')
             .setTitle(messageService.getMessage('tickets.stats.title'))
             .addFields([
                 {

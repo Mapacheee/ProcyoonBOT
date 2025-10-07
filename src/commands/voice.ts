@@ -63,7 +63,7 @@ export class VoiceCommand extends Command {
             }
 
             const voiceEmbed = new EmbedBuilder()
-                .setColor(Colors.Purple)
+                .setColor('#FF4F00')
                 .setTitle(messageService.getMessage('voice_channels.setup.title'))
                 .setDescription(messageService.getMessage('voice_channels.setup.description'))
                 .setThumbnail(interaction.guild?.iconURL() || null)
@@ -116,7 +116,7 @@ export class VoiceCommand extends Command {
         const stats = voiceService.getStats();
 
         const statsEmbed = new EmbedBuilder()
-            .setColor(Colors.Purple)
+            .setColor('#FF4F00')
             .setTitle(messageService.getMessage('voice_channels.stats.title'))
             .addFields([
                 {

@@ -51,7 +51,7 @@ export class ModalSubmitListener extends Listener<typeof Events.InteractionCreat
             const imageUrls = urls.filter(url => isImageUrl(url));
 
             const messageEmbed = new EmbedBuilder()
-                .setColor(Colors.Blue)
+                .setColor('#FF4F00')
                 .setFooter({ 
                     text: `Enviado por ${interaction.user.tag}`, 
                     iconURL: interaction.user.displayAvatarURL() 

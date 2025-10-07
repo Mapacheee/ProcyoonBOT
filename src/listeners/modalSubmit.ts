@@ -111,7 +111,6 @@ export class ModalSubmitListener extends Listener<typeof Events.InteractionCreat
         const voiceService = VoiceChannelService.getInstance();
         
         try {
-            // Verificar que estamos en un servidor
             if (!interaction.guild) {
                 await interaction.reply({
                     content: messageService.getMessage('voice_channels.errors.guild_only'),
@@ -120,7 +119,6 @@ export class ModalSubmitListener extends Listener<typeof Events.InteractionCreat
                 return;
             }
 
-            // Obtener el límite de usuarios del modal
             const userLimitInput = interaction.fields.getTextInputValue('voice_user_limit');
             const userLimit = voiceService.validateUserLimit(userLimitInput);
 
@@ -132,7 +130,6 @@ export class ModalSubmitListener extends Listener<typeof Events.InteractionCreat
                 return;
             }
 
-            // Crear el canal de voz
             const voiceChannel = await voiceService.createTempVoiceChannel(
                 interaction.guild,
                 interaction.user,
@@ -147,7 +144,6 @@ export class ModalSubmitListener extends Listener<typeof Events.InteractionCreat
                 return;
             }
 
-            // Confirmar al usuario
             await interaction.reply({
                 content: messageService.getMessage('voice_channels.create.success', {
                     channel: voiceChannel.toString()

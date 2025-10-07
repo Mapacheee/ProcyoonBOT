@@ -32,14 +32,45 @@ export class ModalSubmitListener extends Listener<typeof Events.InteractionCreat
         try {
             const messageContent = interaction.fields.getTextInputValue('message_content');
 
+            const isImageUrl = (url: string): boolean => {
+                try {
+                    const parsedUrl = new URL(url);
+                    const imageExtensions = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp'];
+                    const pathname = parsedUrl.pathname.toLowerCase();
+                    return imageExtensions.some(ext => pathname.endsWith(ext)) || 
+                           parsedUrl.hostname.includes('imgur.com') ||
+                           parsedUrl.hostname.includes('cdn.discordapp.com') ||
+                           parsedUrl.hostname.includes('media.discordapp.net');
+                } catch {
+                    return false;
+                }
+            };
+
+            const imageUrlRegex = /(https?:\/\/[^\s]+)/g;
+            const urls = messageContent.match(imageUrlRegex) || [];
+            const imageUrls = urls.filter(url => isImageUrl(url));
+
             const messageEmbed = new EmbedBuilder()
-                .setDescription(messageContent)
                 .setColor(Colors.Blue)
                 .setFooter({ 
                     text: `Enviado por ${interaction.user.tag}`, 
                     iconURL: interaction.user.displayAvatarURL() 
                 })
                 .setTimestamp();
+
+            if (imageUrls.length > 0) {
+                messageEmbed.setImage(imageUrls[0]);
+                
+                const textWithoutImages = messageContent.replace(imageUrlRegex, (match) => 
+                    isImageUrl(match) ? '' : match
+                ).trim();
+                
+                if (textWithoutImages) {
+                    messageEmbed.setDescription(textWithoutImages);
+                }
+            } else {
+                messageEmbed.setDescription(messageContent);
+            }
 
             if (interaction.channel && 'send' in interaction.channel) {
                 await interaction.channel.send({ embeds: [messageEmbed] });

@@ -169,6 +169,7 @@ messages:
     input_placeholder: "Escribe tu mensaje aquí..."
     success: "✅ Mensaje enviado exitosamente."
     error: "❌ No se pudo enviar el mensaje."
+    no_permissions: "❌ Solo los miembros del staff pueden usar este comando."
 
 errors:
   missing_permissions: "❌ No tienes los permisos necesarios para ejecutar esta acción."
@@ -190,3 +191,51 @@ help:
     suggestions: "💡 Sistema de Sugerencias"
     messages: "📝 Mensajes"
     moderation: "🛡️ Moderación"
+
+unban:
+  success:
+    title: "✅ Usuario Desbaneado"
+    description: "El usuario ha sido desbaneado exitosamente del servidor."
+  
+  fields:
+    user: "👤 Usuario"
+    moderator: "🛡️ Moderador"
+    reason: "📝 Razón"
+  
+  footer: "Sistema de Moderación - Unban Global"
+  
+  errors:
+    invalid_id: "❌ ID de usuario inválido. Debe ser un ID de Discord válido."
+    user_not_banned: "❌ Este usuario no está baneado en el servidor."
+    fetch_failed: "❌ No se pudo obtener la lista de usuarios baneados o realizar el desbaneo."
+
+unban_all:
+  confirm:
+    title: "⚠️ Confirmación de Desbaneo Masivo"
+    description: "**ADVERTENCIA:** Estás a punto de desbanear a **{count} usuarios** del servidor.\n\n**Razón:** {reason}\n\n**Esta acción NO se puede deshacer.**"
+    users_field: "👥 Usuarios a Desbanear"
+    moderator_field: "🛡️ Moderador"
+    warning: "Esta acción es irreversible. Confirma solo si estás seguro."
+  
+  buttons:
+    confirm: "✅ Confirmar Desbaneo"
+    cancel: "❌ Cancelar"
+  
+  processing: "🔄 Procesando desbaneo masivo... Esto puede tomar varios minutos."
+  progress: "🔄 Progreso: {current}/{total} usuarios procesados..."
+  cancelled: "❌ Desbaneo masivo cancelado."
+  timeout: "⏰ Tiempo agotado. Desbaneo masivo cancelado por seguridad."
+  no_banned_users: "✅ No hay usuarios baneados en este servidor."
+  
+  results:
+    title: "📊 Resultados del Desbaneo Masivo"
+    description: "El desbaneo masivo ha sido completado."
+    success_field: "✅ Exitosos"
+    failed_field: "❌ Fallidos"
+    moderator_field: "🛡️ Ejecutado por"
+    failed_users_field: "❌ Usuarios que no se pudieron desbanear"
+    footer: "Desbaneo Masivo Completado"
+  
+  errors:
+    admin_only: "❌ Solo los administradores pueden usar este comando."
+    fetch_failed: "❌ No se pudo obtener la lista de usuarios baneados."

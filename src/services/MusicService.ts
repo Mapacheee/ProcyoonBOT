@@ -7,10 +7,12 @@ import {
     VoiceConnection,
     VoiceConnectionStatus,
     joinVoiceChannel,
-    DiscordGatewayAdapterCreator
+    DiscordGatewayAdapterCreator,
+    StreamType
 } from '@discordjs/voice';
 import { Guild, VoiceBasedChannel } from 'discord.js';
 import * as play from 'play-dl';
+import ytdl from '@distube/ytdl-core';
 
 export interface Song {
     title: string;
@@ -224,9 +226,15 @@ export class MusicService {
             }
 
             console.log('Streaming song:', song.title, 'from URL:', song.url);
-            const stream = await play.stream(song.url);
-            const resource = createAudioResource(stream.stream, {
-                inputType: stream.type
+            
+            const stream = ytdl(song.url, {
+                filter: 'audioonly',
+                quality: 'highestaudio',
+                highWaterMark: 1 << 25
+            });
+
+            const resource = createAudioResource(stream, {
+                inputType: StreamType.Arbitrary
             });
 
             queue.player.play(resource);

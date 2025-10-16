@@ -9,7 +9,14 @@ general:
   config_not_found: "❌ Configuración no encontrada. Contacta a un administrador."
 
 welcome:
-  message: "🎉 ¡Te damos la bienvenida {user} a Revenge Network!"
+  embed:
+    title: "🎉 ¡Te damos la bienvenida a Revenge Network!"
+    description: "¡Hola {user}! Nos alegra que te hayas unido a nuestra comunidad.\n\n¡Esperamos que disfrutes tu estadía con nosotros!"
+    member_count: "👥 Miembro #{count}"
+    joined_at: "📅 Se unió"
+    account_created: "🎂 Cuenta creada"
+    footer: "¡Disfruta tu estadía!"
+  message: "🎉 ¡Te damos la bienvenida {user}!"
   channel_not_configured: "❌ El canal de bienvenida no está configurado."
 
 voice_channels:
@@ -184,7 +191,7 @@ confirmations:
   action_cancelled: "❌ Acción cancelada."
   
 help:
-  main_title: "🦝 ProcyoonBOT - Comandos"
+  main_title: "Revenge - Comandos"
   main_description: "Lista de comandos disponibles"
   categories:
     tickets: "🎫 Sistema de Tickets"

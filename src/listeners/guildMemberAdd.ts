@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Events, Listener, type ListenerOptions } from '@sapphire/framework';
-import { type GuildMember, type TextChannel } from 'discord.js';
+import { type GuildMember, type TextChannel, EmbedBuilder } from 'discord.js';
 
 @ApplyOptions<ListenerOptions>({
     event: Events.GuildMemberAdd
@@ -27,11 +27,46 @@ export class GuildMemberAddListener extends Listener<typeof Events.GuildMemberAd
                 return;
             }
 
+            const welcomeEmbed = new EmbedBuilder()
+                .setColor('#FF4F00')
+                .setTitle(messageService.getMessage('welcome.embed.title'))
+                .setDescription(messageService.getMessage('welcome.embed.description', {
+                    user: member.toString()
+                }))
+                .setThumbnail(member.user.displayAvatarURL({ size: 256 }))
+                .addFields(
+                    {
+                        name: messageService.getMessage('welcome.embed.member_count', {
+                            count: member.guild.memberCount.toString()
+                        }),
+                        value: '\u200B',
+                        inline: false
+                    },
+                    {
+                        name: messageService.getMessage('welcome.embed.joined_at'),
+                        value: `<t:${Math.floor(member.joinedTimestamp! / 1000)}:F>`,
+                        inline: true
+                    },
+                    {
+                        name: messageService.getMessage('welcome.embed.account_created'),
+                        value: `<t:${Math.floor(member.user.createdTimestamp / 1000)}:F>`,
+                        inline: true
+                    }
+                )
+                .setFooter({ 
+                    text: messageService.getMessage('welcome.embed.footer'),
+                    iconURL: member.guild.iconURL() ?? undefined
+                })
+                .setTimestamp();
+
             const welcomeMessage = messageService.getMessage('welcome.message', {
                 user: member.toString()
             });
 
-            await welcomeChannel.send(welcomeMessage);
+            await welcomeChannel.send({
+                content: welcomeMessage,
+                embeds: [welcomeEmbed]
+            });
 
             this.container.logger.info(
                 `Welcome message sent for new member: ${member.user.tag} (${member.id}) in guild: ${member.guild.name}`

@@ -59,12 +59,7 @@ export class GuildMemberAddListener extends Listener<typeof Events.GuildMemberAd
                 })
                 .setTimestamp();
 
-            const welcomeMessage = messageService.getMessage('welcome.message', {
-                user: member.toString()
-            });
-
             await welcomeChannel.send({
-                content: welcomeMessage,
                 embeds: [welcomeEmbed]
             });
 

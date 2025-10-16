@@ -111,9 +111,19 @@ export class MusicService {
             } else if (query.includes('spotify.com')) {
                 return await this.getSpotifyInfo(query, requestedBy);
             } else {
-                const searched = await play.search(query, { limit: 1 });
-                if (searched.length === 0) return null;
-                return await this.getYouTubeInfo(searched[0].url, requestedBy);
+                const searched = await play.search(query, { limit: 1, source: { youtube: "video" } });
+                if (searched.length === 0) {
+                    console.error('No search results found for query:', query);
+                    return null;
+                }
+
+                const result = searched[0];
+                if (!result.url) {
+                    console.error('Search result has no URL:', result);
+                    return null;
+                }
+
+                return await this.getYouTubeInfo(result.url, requestedBy);
             }
         } catch (error) {
             console.error('Error searching song:', error);
@@ -123,13 +133,24 @@ export class MusicService {
 
     private async getYouTubeInfo(url: string, requestedBy: string): Promise<Song | null> {
         try {
+            if (!url || typeof url !== 'string') {
+                console.error('Invalid URL provided to getYouTubeInfo:', url);
+                return null;
+            }
+
             const info = await play.video_info(url);
             const video = info.video_details;
 
+            const videoUrl = video.url || url;
+            if (!videoUrl) {
+                console.error('No valid URL found for video:', video.title);
+                return null;
+            }
+
             return {
                 title: video.title || 'Unknown Title',
-                url: video.url,
-                duration: video.durationInSec,
+                url: videoUrl,
+                duration: video.durationInSec || 0,
                 thumbnail: video.thumbnails[0]?.url || '',
                 requestedBy,
                 type: 'youtube'
@@ -149,13 +170,21 @@ export class MusicService {
                 const searchQuery = `${track.name} ${track.artists?.[0]?.name || ''}`;
                 const searched = await play.search(searchQuery, { limit: 1 });
                 
-                if (searched.length === 0) return null;
+                if (searched.length === 0) {
+                    console.error('No YouTube results found for Spotify track:', searchQuery);
+                    return null;
+                }
+
+                if (!searched[0].url) {
+                    console.error('Search result has no valid URL');
+                    return null;
+                }
                 
                 return {
                     title: `${track.name} - ${track.artists?.[0]?.name || 'Unknown'}`,
                     url: searched[0].url,
-                    duration: track.durationInSec || 0,
-                    thumbnail: track.thumbnail?.url || '',
+                    duration: track.durationInSec || searched[0].durationInSec || 0,
+                    thumbnail: track.thumbnail?.url || searched[0].thumbnails?.[0]?.url || '',
                     requestedBy,
                     type: 'spotify'
                 };
@@ -187,6 +216,14 @@ export class MusicService {
         queue.playing = true;
 
         try {
+            if (!song.url || typeof song.url !== 'string') {
+                console.error('Invalid song URL:', song);
+                queue.textChannel?.send(`❌ Error: La canción "${song.title}" no tiene una URL válida.`);
+                this.playNext(guildId);
+                return;
+            }
+
+            console.log('Streaming song:', song.title, 'from URL:', song.url);
             const stream = await play.stream(song.url);
             const resource = createAudioResource(stream.stream, {
                 inputType: stream.type
@@ -196,6 +233,7 @@ export class MusicService {
             await entersState(queue.player, AudioPlayerStatus.Playing, 5000);
         } catch (error) {
             console.error('Error playing song:', error);
+            queue.textChannel?.send(`❌ Error al reproducir: ${song.title}`);
             this.playNext(guildId);
         }
     }

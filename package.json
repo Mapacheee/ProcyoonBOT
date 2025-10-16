@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@discordjs/voice": "^0.17.0",
+    "@distube/ytdl-core": "^4.14.4",
     "@sapphire/decorators": "^6.2.0",
     "@sapphire/framework": "^5.3.6",
     "@sapphire/plugin-logger": "^4.1.0",
@@ -8,7 +10,11 @@
     "@types/node": "^24.3.1",
     "colorette": "^2.0.20",
     "discord.js": "^14.22.1",
+    "distube": "^5.0.2",
     "dotenv": "^17.2.2",
+    "ffmpeg-static": "^5.2.0",
+    "libsodium-wrappers": "^0.7.15",
+    "play-dl": "^1.9.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2",
     "yaml": "^2.8.1"

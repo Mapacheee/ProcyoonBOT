@@ -184,13 +184,57 @@ confirmations:
   action_cancelled: "❌ Acción cancelada."
   
 help:
-  main_title: "Revenge - Comandos"
+  main_title: "🦝 ProcyoonBOT - Comandos"
   main_description: "Lista de comandos disponibles"
   categories:
     tickets: "🎫 Sistema de Tickets"
     suggestions: "💡 Sistema de Sugerencias"
     messages: "📝 Mensajes"
     moderation: "🛡️ Moderación"
+    music: "🎵 Música"
+
+music:
+  play:
+    now_playing: "🎵 Reproduciendo Ahora"
+    added_to_queue: "✅ Añadido a la Cola"
+    duration: "⏱️ Duración"
+    requested_by: "👤 Solicitado por"
+    source: "📡 Fuente"
+  
+  skip:
+    success: "⏭️ Canción saltada exitosamente."
+  
+  stop:
+    success: "⏹️ Música detenida y cola limpiada."
+  
+  pause:
+    success: "⏸️ Música pausada."
+  
+  resume:
+    success: "▶️ Música reanudada."
+  
+  queue:
+    title: "🎵 Cola de Música"
+    empty: "❌ La cola de música está vacía."
+    now_playing: "▶️ Reproduciendo Ahora"
+    up_next: "⏭️ Próximas Canciones ({count})"
+  
+  nowplaying:
+    title: "🎵 Reproduciendo Ahora"
+    loop: "🔁 Repetición"
+  
+  loop:
+    enabled: "🔁 Modo de repetición activado."
+    disabled: "▶️ Modo de repetición desactivado."
+  
+  clear:
+    success: "🗑️ Cola de música limpiada."
+  
+  errors:
+    not_in_voice: "❌ Debes estar en un canal de voz para usar este comando."
+    song_not_found: "❌ No se pudo encontrar la canción. Intenta con otro enlace o búsqueda."
+    nothing_playing: "❌ No hay música reproduciéndose actualmente."
+    not_paused: "❌ La música no está pausada."
 
 unban:
   success:
